@@ -8,88 +8,147 @@
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
+  <!-- Шапка сайта -->
   <header class="sticky top-0 z-30 bg-white border-b border-slate-200">
     <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center">М</div>
+        <div class="w-9 h-9 rounded-xl bg-sky-600 text-white font-bold flex items-center justify-center shadow-sm">М</div>
         <div>
           <div class="font-bold text-slate-900 leading-none">Мухаммад</div>
           <div class="text-xs text-slate-500">DTF Print & Service</div>
         </div>
       </div>
       <a href="https://wa.me/77072346292?text=%D0%90%D1%81%D1%81%D0%B0%D0%BB%D0%B0%D0%BC%20%D1%83%D0%B0%D0%BB%D0%B5%D0%B9%D0%BA%D1%83%D0%BC,%20%D0%9C%D1%83%D1%85%D0%B0%D0%BC%D0%BC%D0%B0%D0%B4!" target="_blank" 
-         class="text-xs font-semibold bg-sky-600 text-white px-4 py-2 rounded-xl">
-        Связаться по WhatsApp
+         class="text-xs font-semibold bg-sky-600 text-white px-4 py-2 rounded-xl hover:bg-sky-700 transition flex items-center gap-2 shadow-sm">
+        <!-- Иконка WhatsApp / Чата -->
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+        Связаться в WhatsApp
       </a>
     </div>
   </header>
 
   <main class="max-w-4xl mx-auto px-4 py-8 space-y-12">
 
+    <!-- Главный баннер -->
     <div class="space-y-4">
-      <span class="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-100">
-        Тараз • На связи
+      <span class="text-xs font-bold uppercase tracking-wider text-sky-700 bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-100 inline-block">
+        📍 Тараз • На связи
       </span>
       <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900">
         DTF-печать на одежде и настройка принтеров
       </h1>
-      <p class="text-slate-600">
+      <p class="text-slate-600 text-base sm:text-lg">
         Привет! Я Мухаммад. Делаю яркие принты на футболки и худи, а также профессионально настраиваю DTF-оборудование.
       </p>
     </div>
 
-    <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-6">
-      <h2 class="text-lg font-bold text-slate-900">Калькулятор заказа</h2>
+    <!-- Калькулятор заказа -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+      <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+        <svg class="w-5 h-5 text-sky-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+        Калькулятор заказа
+      </h2>
 
+      <!-- Выбор типа печати -->
       <div class="space-y-2">
-        <label class="text-xs font-bold uppercase text-slate-500">Выберите тип заказа:</label>
-        <div class="grid grid-cols-2 gap-3">
+        <label class="text-xs font-bold uppercase text-slate-500 tracking-wider">Выберите тип печати:</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button type="button" onclick="setPrice(1800, 'Принт А4')" id="btn1"
-            class="p-3 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold">
-            Принт А4 (1 800 ₸)
+            class="p-3.5 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold transition">
+            Принт А4 <span class="block text-xs font-normal text-sky-700 mt-0.5">1 800 ₸</span>
           </button>
           <button type="button" onclick="setPrice(2800, 'Принт А3')" id="btn2"
-            class="p-3 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold">
-            Принт А3 (2 800 ₸)
+            class="p-3.5 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold transition hover:border-slate-300">
+            Принт А3 <span class="block text-xs font-normal text-slate-500 mt-0.5">2 800 ₸</span>
+          </button>
+          <button type="button" onclick="setPrice(3500, 'Принт до 30 см')" id="btn3"
+            class="p-3.5 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold transition hover:border-slate-300">
+            Принт до 30 см <span class="block text-xs font-normal text-slate-500 mt-0.5">3 500 ₸</span>
+          </button>
+          <button type="button" onclick="setPrice(6500, 'А3 метражом')" id="btn4"
+            class="p-3.5 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold transition hover:border-slate-300">
+            А3 метражом <span class="block text-xs font-normal text-slate-500 mt-0.5">от 6 500 ₸</span>
           </button>
         </div>
       </div>
 
-      <div class="space-y-2">
+      <!-- Ползунок количества -->
+      <div class="space-y-3 pt-2">
         <div class="flex justify-between text-xs font-bold text-slate-500">
-          <span>Количество:</span>
-          <span id="qtyText" class="text-sky-600 font-extrabold text-sm">10 шт.</span>
+          <span>Количество изделий:</span>
+          <span id="qtyText" class="text-sky-600 font-extrabold text-sm bg-sky-50 px-2 py-0.5 rounded">10 шт.</span>
         </div>
-        <input id="range" type="range" min="1" max="100" value="10" oninput="calc()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer">
+        <input id="range" type="range" min="1" max="100" value="10" oninput="calc()" class="w-full h-2 bg-slate-200 rounded-lg cursor-pointer accent-sky-600">
       </div>
 
+      <!-- Итог и кнопка отправки -->
       <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100">
         <div>
-          <div class="text-xs text-slate-500">Итого:</div>
+          <div class="text-xs text-slate-500">Итоговая стоимость:</div>
           <div id="total" class="text-2xl font-extrabold text-slate-900">18 000 ₸</div>
         </div>
-        <a id="orderBtn" href="https://wa.me/77072346292?text=%D0%90%D1%81%D1%81%D0%B0%D0%BB%D0%B0%D0%BC%20%D1%83%D0%B0%D0%BB%D0%B5%D0%B9%D0%BA%D1%83%D0%BC,%20%D0%9C%D1%83%D1%85%D0%B0%D0%BC%D0%BC%D0%B0%D0%B4!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C" target="_blank"
-           class="w-full sm:w-auto text-center px-6 py-3 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-sky-600 transition">
+        <a id="orderBtn" href="https://wa.me/77072346292?text=%D0%90%D1%81%D1%81%D0%B0%D0%BB%D0%B0%D0%BC%20%D1%83%D0%B0%D0%BB%D0%B5%D0%B9%D0%BA%D1%83%D0%BC,%20%D0%9C%D1%83%D1%85%D0%B0%D0%}}_{%D0%BC%D0%B0%D0%B4!" target="_blank"
+           class="w-full sm:w-auto text-center px-6 py-3.5 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-sky-600 transition flex items-center justify-center gap-2 shadow-sm">
+          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
           Заказать в WhatsApp →
         </a>
       </div>
     </div>
 
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold">01</div>
-        <h3 class="font-bold text-slate-900 text-lg">DTF Печать</h3>
-        <p class="text-sm text-slate-600">На футболки, худи и спецодежду. Стойкие яркие принты, выдерживающие больше 50 стирок.</p>
-      </div>
-      <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">02</div>
-        <h3 class="font-bold text-slate-900 text-lg">Сервис принтеров</h3>
-        <p class="text-sm text-slate-600">Настройка голов, калибровка цветов, устранение полошения и запуск станков.</p>
+    <!-- Блок преимуществ с иконками -->
+    <div class="space-y-6">
+      <h2 class="text-xl font-extrabold text-slate-900">Почему выбирают печать у меня</h2>
+      
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Карточка 1: Трикотаж и одежда -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3 shadow-sm hover:border-sky-200 transition">
+          <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 text-lg">DTF Печать и трикотаж</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Качественный трикотаж от Мухаммада. В наличии базовые футболки, оверсайз футболки и стильные худи оверсайз. Также доступна печать на вашу одежду (строго с предварительным утверждением макета).
+          </p>
+        </div>
+
+        <!-- Карточка 2: Сервис принтеров -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3 shadow-sm hover:border-amber-200 transition">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 text-lg">Сервис принтеров</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Профессиональная настройка печатающих голов, точная калибровка цветов, быстрое устранение полошения и запуск DTF-станков «под ключ».
+          </p>
+        </div>
+
+        <!-- Карточка 3: Стойкость стирок -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3 shadow-sm hover:border-purple-200 transition">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 text-lg">Стойкость &gt; 50 стирок</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Использую надежные чернила и клей. Принты не трескаются, не выцветают и уверенно выдерживают более 50 стирок при соблюдении рекомендаций по уходу.
+          </p>
+        </div>
+
+        <!-- Карточка 4: Космос и цены -->
+        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3 shadow-sm hover:border-rose-200 transition">
+          <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+          </div>
+          <h3 class="font-bold text-slate-900 text-lg">Принты «Космос» и цены</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Создаем глубокие, детализированные принты с эффектом космос. <em>Обратите внимание:</em> цены на сами текстильные изделия уточняйте отдельно при оформлении заказа!
+          </p>
+        </div>
       </div>
     </div>
 
   </main>
 
+  <!-- Скрипты калькулятора -->
   <script>
     let price = 1800;
     let nameItem = 'Принт А4';
@@ -97,13 +156,20 @@
     function setPrice(p, name) {
       price = p;
       nameItem = name;
-      if(p === 1800) {
-        document.getElementById('btn1').className = 'p-3 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold';
-        document.getElementById('btn2').className = 'p-3 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold';
-      } else {
-        document.getElementById('btn2').className = 'p-3 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold';
-        document.getElementById('btn1').className = 'p-3 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold';
-      }
+
+      let buttons = ['btn1', 'btn2', 'btn3', 'btn4'];
+      
+      buttons.forEach(id => {
+        let btn = document.getElementById(id);
+        if (btn) {
+          if (btn.id === event.currentTarget.id) {
+            btn.className = 'p-3.5 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold transition';
+          } else {
+            btn.className = 'p-3.5 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold transition hover:border-slate-300';
+          }
+        }
+      });
+
       calc();
     }
 
@@ -111,12 +177,13 @@
       let qty = parseInt(document.getElementById('range').value);
       document.getElementById('qtyText').innerText = qty + ' шт.';
       
+      // Система скидок: от 50 шт — 25%, от 20 шт — 15%
       let discount = qty >= 50 ? 0.25 : (qty >= 20 ? 0.15 : 0);
       let sum = Math.round((price * qty * (1 - discount)) / 100) * 100;
       
       document.getElementById('total').innerText = sum.toLocaleString('ru-RU') + ' ₸';
       
-      let msg = encodeURIComponent('Ассалам уалейкум, Мухаммад! Хочу заказать: ' + nameItem + ', тираж ' + qty + ' шт. Сумма около ' + sum + ' ₸.');
+      let msg = encodeURIComponent('Ассалам уалейкум, Мухаммад! Хочу заказать: ' + nameItem + ', тираж ' + qty + ' шт. Сумма примерно ' + sum.toLocaleString('ru-RU') + ' ₸.');
       document.getElementById('orderBtn').href = 'https://wa.me/77072346292?text=' + msg;
     }
   </script>
