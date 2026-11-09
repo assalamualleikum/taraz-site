@@ -17,7 +17,7 @@
           <div class="text-xs text-slate-500">DTF Print & Service</div>
         </div>
       </div>
-      <a href="Ассалам уалейкум,%20Мухаммад!" target="_blank" 
+      <a href="https://wa.me/77072346292?text=%D0%90%D1%81%D1%81%D0%B0%D0%BB%D0%B0%D0%BC%20%D1%83%D0%B0%D0%BB%D0%B5%D0%B9%D0%BA%D1%83%D0%BC,%20%D0%9C%D1%83%D1%85%D0%B0%D0%BC%D0%BC%D0%B0%D0%B4!" target="_blank" 
          class="text-xs font-semibold bg-sky-600 text-white px-4 py-2 rounded-xl">
         Связаться по WhatsApp
       </a>
@@ -68,58 +68,4 @@
           <div class="text-xs text-slate-500">Итого:</div>
           <div id="total" class="text-2xl font-extrabold text-slate-900">18 000 ₸</div>
         </div>
-        <a id="orderBtn" href="https://wa.me/77072346292?text=%20Ассалам%20уалейкум,%20Мухаммад!%20Хочу%20заказать" target="_blank"
-           class="w-full sm:w-auto text-center px-6 py-3 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-sky-600 transition">
-          Заказать в WhatsApp →
-        </a>
-      </div>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold">01</div>
-        <h3 class="font-bold text-slate-900 text-lg">DTF Печать</h3>
-        <p class="text-sm text-slate-600">На футболки, худи и спецодежду. Стойкие яркие принты, выдерживающие больше 50 стирок.</p>
-      </div>
-      <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">02</div>
-        <h3 class="font-bold text-slate-900 text-lg">Сервис принтеров</h3>
-        <p class="text-sm text-slate-600">Настройка голов, калибровка цветов, устранение полошения и запуск станков.</p>
-      </div>
-    </div>
-
-  </main>
-
-  <script>
-    let price = 1800;
-    let nameItem = 'Принт А4';
-
-    function setPrice(p, name) {
-      price = p;
-      nameItem = name;
-      if(p === 1800) {
-        document.getElementById('btn1').className = 'p-3 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold';
-        document.getElementById('btn2').className = 'p-3 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold';
-      } else {
-        document.getElementById('btn2').className = 'p-3 text-left rounded-xl border-2 border-sky-600 bg-sky-50 text-sm font-bold';
-        document.getElementById('btn1').className = 'p-3 text-left rounded-xl border border-slate-200 bg-white text-sm font-bold';
-      }
-      calc();
-    }
-
-    function calc() {
-      let qty = parseInt(document.getElementById('range').value);
-      document.getElementById('qtyText').innerText = qty + ' шт.';
-      
-      let discount = qty >= 50 ? 0.25 : (qty >= 20 ? 0.15 : 0);
-      let sum = Math.round((price * qty * (1 - discount)) / 100) * 100;
-      
-      document.getElementById('total').innerText = sum.toLocaleString('ru-RU') + ' ₸';
-      
-      let msg = Ассалам уалейкум, Мухаммад! Хочу заказать: ' + nameItem + ', тираж ' + qty + ' шт. Сумма около ' + sum + ' ₸.');
-      document.getElementById('orderBtn').href = 'https://wa.me/77072346292?text=' + msg;
-    }
-  </script>
-
-</body>
-</html>
+        <a id="orderBtn" href="
