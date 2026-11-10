@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мухаммад — DTF-печать на одежде и настройка принтеров | Тараз</title>
+  <title>Мухаммад — DTF-печать и сервис принтеров | Тараз</title>
   <meta name="description" content="Качественная DTF-печать принтов на футболках, худи и спецодежде в Таразе. Профессиональная настройка, калибровка и обслуживание DTF-принтеров.">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,20 +11,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
-    /* --- НОВЫЕ СТИЛИ ДЛЯ ФОНА --- */
     body {
       font-family: 'Inter', sans-serif;
-      /* Ссылка на твое новое сгенерированное фото */
-      background-image: linear-gradient(rgba(15, 23, 42, 0.88), rgba(15, 23, 42, 0.92)), 
+      /* Затемнили фон сильнее, чтобы карточки и текст выделялись идеально */
+      background-image: linear-gradient(rgba(11, 15, 25, 0.93), rgba(11, 15, 25, 0.96)), 
                         url('https://replicate.delivery/xpbk/0Wz279160f07U9I7104c9e0g64889d4689d176c7104c9e0g/output.png');
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
-      background-attachment: fixed; /* Фото зафиксировано при прокрутке */
-      color: #f1f5f9; /* Светлый текст по умолчанию */
+      background-attachment: fixed;
+      color: #f8fafc;
     }
 
-    /* Кастомизация ползунка */
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       height: 24px;
@@ -32,100 +30,78 @@
       border-radius: 50%;
       background: #0284c7;
       cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
     }
-    
-    /* --- Стили для элементов на темном фоне --- */
-    .bg-white { background-color: #111827; } /* Темный контейнер */
-    .text-slate-900, .text-slate-800 { color: #f1f5f9; }
-    .text-slate-600, .text-slate-500, .text-slate-400 { color: #d1d5db; }
-    .border-slate-200, .border-slate-100, .border-b { border-color: #374151; }
-    .hover\:bg-slate-50:hover, .bg-slate-50 { background-color: #1f2937; }
-    
-    /* Акцентные цвета (остались синими для контраста) */
-    .text-sky-600, .theme-red { color: #38bdf8; }
-    .text-sky-700 { color: #7dd3fc; }
-    .bg-sky-600 { background-color: #0284c7; }
-    .hover\:bg-sky-700:hover { background-color: #0369a1; }
-    .bg-sky-50, .bg-sky-50\/60 { background-color: rgba(2, 132, 199, 0.2); }
-    .border-sky-600 { border-color: #0284c7; }
-    
-    .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.2); }
-    .text-emerald-700 { color: #6ee7b7; }
-    
-    .bg-amber-50 { background-color: rgba(245, 158, 11, 0.2); }
-    .text-amber-600 { color: #fcd34d; }
-
   </style>
 </head>
 <body class="antialiased selection:bg-sky-900 selection:text-sky-100">
 
   <!-- Шапка -->
-  <header class="sticky top-0 z-30 bg-slate-900/90 backdrop-blur-sm border-b border-slate-700/80">
+  <header class="sticky top-0 z-30 bg-slate-950/85 backdrop-blur-md border-b border-slate-800">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       
       <a href="#" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 rounded-xl bg-sky-600 text-white font-extrabold flex items-center justify-center text-base shadow-inner group-hover:bg-sky-700 transition">
+        <div class="w-9 h-9 rounded-xl bg-sky-600 text-white font-extrabold flex items-center justify-center text-base shadow-lg shadow-sky-600/30">
           М
         </div>
         <div>
-          <span class="font-bold text-slate-900 tracking-tight block leading-none">Мухаммад</span>
-          <span class="text-[11px] text-slate-500 font-medium">DTF Print & Service</span>
+          <span class="font-bold text-white tracking-tight block leading-none">Мухаммад</span>
+          <span class="text-[11px] text-slate-400 font-medium">DTF Print & Service</span>
         </div>
       </a>
 
       <div class="flex items-center gap-3">
-        <span class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-700/20">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          Тараз • Принимаю заказы
+        <span class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 bg-emerald-950/60 px-3 py-1.5 rounded-full border border-emerald-800/50">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Тараз
         </span>
-        <a href="#calculator" class="text-xs sm:text-sm font-semibold text-sky-600 bg-sky-50/60 hover:bg-sky-50 px-3.5 py-2 rounded-xl transition">
-          Рассчитать цену
+        <a href="#calculator" class="text-xs sm:text-sm font-semibold text-sky-400 bg-sky-950/80 hover:bg-sky-900 px-3.5 py-2 rounded-xl transition border border-sky-800/40">
+          Рассчитать
         </a>
       </div>
 
     </div>
   </header>
 
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-20">
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-16">
 
-    <!-- Первый экран: Личный бренд + Калькулятор -->
+    <!-- Главный экран -->
     <section id="calculator" class="grid lg:grid-cols-12 gap-10 items-center">
       <div class="lg:col-span-6 space-y-6">
-        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-600 bg-sky-50 px-3 py-1.5 rounded-lg border border-sky-600/20">
+        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-sky-400 bg-sky-950/80 px-3.5 py-1.5 rounded-lg border border-sky-800/50">
           <span>Тараз • Печать на ткани и сервис станка</span>
         </div>
 
-        <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 leading-[1.15] tracking-tight">
-          Четкие DTF-принты на одежду и <span class="text-sky-600">точная настройка</span> принтеров
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-white leading-[1.12] tracking-tight">
+          Четкие DTF-принты на одежду и <span class="text-sky-400">точная настройка</span> принтеров
         </h1>
 
-        <p class="text-base sm:text-lg text-slate-300 leading-relaxed">
+        <p class="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
           Привет! Я Мухаммад. Делаю яркую, эластичную печать, которая выдерживает десятки стирок без трещин, а также настраиваю DTF-оборудование, чтобы цвета попадали в макет с первого прогона.
         </p>
 
         <div class="grid grid-cols-3 gap-3 pt-1">
-          <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-lg shadow-black/10">
-            <div class="text-lg sm:text-xl font-extrabold text-slate-900">50+ стирок</div>
+          <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 shadow-xl">
+            <div class="text-lg sm:text-xl font-extrabold text-white">50+ стирок</div>
             <div class="text-xs text-slate-400 mt-0.5">держится принт</div>
           </div>
-          <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-lg shadow-black/10">
-            <div class="text-lg sm:text-xl font-extrabold text-slate-900">От 1 шт.</div>
+          <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 shadow-xl">
+            <div class="text-lg sm:text-xl font-extrabold text-white">От 1 шт.</div>
             <div class="text-xs text-slate-400 mt-0.5">и оптовые тиражи</div>
           </div>
-          <div class="bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-lg shadow-black/10">
-            <div class="text-lg sm:text-xl font-extrabold text-slate-900">Выезд</div>
-            <div class="text-xs text-slate-400 mt-0.5">настройка по городу</div>
+          <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 shadow-xl">
+            <div class="text-lg sm:text-xl font-extrabold text-white">Выезд</div>
+            <div class="text-xs text-slate-400 mt-0.5">по городу Тараз</div>
           </div>
         </div>
 
         <div class="flex flex-wrap gap-3 pt-2">
           <a href="https://wa.me/77072346292?text=Привет,%20Мухаммад!%20Хочу%20узнать%20по%20DTF-печати" target="_blank" rel="noopener"
-             class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-sky-600 text-white font-semibold hover:bg-sky-700 transition shadow-md shadow-black/10">
+             class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-sky-600 text-white font-semibold hover:bg-sky-500 transition shadow-lg shadow-sky-600/30">
             Написать в WhatsApp
           </a>
           <a href="#services"
-             class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-white text-slate-100 font-semibold border border-slate-200/80 hover:border-sky-300 hover:text-sky-500 transition shadow-md shadow-black/10">
+             class="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-slate-900 text-slate-200 font-semibold border border-slate-700 hover:border-sky-500 hover:text-sky-400 transition shadow-lg">
             Услуги и сервис
           </a>
         </div>
@@ -133,34 +109,34 @@
 
       <!-- Интерактивный калькулятор стоимости -->
       <div class="lg:col-span-6">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-2xl shadow-black/20 space-y-6">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div class="bg-slate-900/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-slate-800 shadow-2xl shadow-black/50 space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <div>
-              <h2 class="text-lg font-bold text-slate-900">Быстрый расчет заказа</h2>
-              <p class="text-xs text-slate-500 mt-0.5">Ориентировочная цена с учетом скидки за объем</p>
+              <h2 class="text-lg font-bold text-white">Калькулятор заказа</h2>
+              <p class="text-xs text-slate-400 mt-0.5">Расчет стоимости с учетом скидки за объем</p>
             </div>
-            <span class="text-xs font-semibold text-sky-700 bg-sky-50 px-2.5 py-1 rounded-md">Онлайн-смета</span>
+            <span class="text-xs font-semibold text-sky-400 bg-sky-950 px-2.5 py-1 rounded-md border border-sky-800/40">Онлайн</span>
           </div>
 
           <!-- Выбор формата -->
           <div class="space-y-2.5">
-            <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 block">1. Выберите формат задачи</label>
+            <label class="text-xs font-semibold uppercase tracking-wider text-slate-400 block">1. Выберите формат задачи</label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" id="formatOptions">
               <button type="button" data-price="1800" data-unit="шт." data-name="Принт А4 / грудь"
-                class="format-btn active text-left p-3 rounded-xl border-2 border-sky-600 bg-sky-50/60 transition">
-                <div class="text-sm font-bold text-slate-900">Принт А4 / лого</div>
+                class="format-btn active text-left p-3 rounded-xl border-2 border-sky-500 bg-sky-950/60 transition">
+                <div class="text-sm font-bold text-white">Принт А4 / лого</div>
                 <div class="text-xs text-slate-400 mt-0.5">от 1 800 ₸ / шт.</div>
               </button>
 
               <button type="button" data-price="2800" data-unit="шт." data-name="Большой принт А3"
-                class="format-btn text-left p-3 rounded-xl border border-slate-200 hover:border-sky-300 bg-white transition">
-                <div class="text-sm font-bold text-slate-900">Принт А3 (спина)</div>
+                class="format-btn text-left p-3 rounded-xl border border-slate-800 hover:border-sky-500 bg-slate-900/60 transition">
+                <div class="text-sm font-bold text-white">Принт А3 (спина)</div>
                 <div class="text-xs text-slate-400 mt-0.5">от 2 800 ₸ / шт.</div>
               </button>
 
               <button type="button" data-price="6500" data-unit="пог. м" data-name="Рулонная пленка (пог. метр)"
-                class="format-btn text-left p-3 rounded-xl border border-slate-200 hover:border-sky-300 bg-white transition">
-                <div class="text-sm font-bold text-slate-900">Пленка в рулоне</div>
+                class="format-btn text-left p-3 rounded-xl border border-slate-800 hover:border-sky-500 bg-slate-900/60 transition">
+                <div class="text-sm font-bold text-white">Пленка в рулоне</div>
                 <div class="text-xs text-slate-400 mt-0.5">от 6 500 ₸ / метр</div>
               </button>
             </div>
@@ -169,106 +145,106 @@
           <!-- Ползунок количества -->
           <div class="space-y-3 pt-1">
             <div class="flex justify-between items-center">
-              <label for="qtyRange" class="text-xs font-semibold uppercase tracking-wider text-slate-500">2. Тираж / объем</label>
-              <span id="qtyDisplay" class="text-base font-extrabold text-sky-600 bg-sky-50 px-3 py-0.5 rounded-lg">10 шт.</span>
+              <label for="qtyRange" class="text-xs font-semibold uppercase tracking-wider text-slate-400">2. Тираж / объем</label>
+              <span id="qtyDisplay" class="text-base font-extrabold text-sky-400 bg-sky-950 px-3 py-0.5 rounded-lg border border-sky-800/40">10 шт.</span>
             </div>
-            <input id="qtyRange" type="range" min="1" max="100" value="10" class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
+            <input id="qtyRange" type="range" min="1" max="100" value="10" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
             <div class="flex justify-between text-[11px] text-slate-400">
-              <span>1 (розница)</span>
-              <span>25 (мелкий опт -15%)</span>
-              <span>50+ (опт -25%)</span>
+              <span>1 шт.</span>
+              <span>25 шт. (-15%)</span>
+              <span>50+ шт. (-25%)</span>
             </div>
           </div>
 
           <!-- Итоговая плашка -->
-          <div class="bg-slate-50 rounded-2xl p-4 sm:p-5 border border-slate-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="bg-slate-950/80 rounded-2xl p-4 sm:p-5 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <div class="text-xs text-slate-500 flex items-center gap-2">
-                <span>Примерная стоимость:</span>
-                <span id="discountBadge" class="hidden text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">Скидка учтена</span>
+              <div class="text-xs text-slate-400 flex items-center gap-2">
+                <span>Итоговая цена:</span>
+                <span id="discountBadge" class="hidden text-[11px] font-semibold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-800">Скидка учтена</span>
               </div>
-              <div id="totalPrice" class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">18 000 ₸</div>
+              <div id="totalPrice" class="text-2xl sm:text-3xl font-extrabold text-white mt-1">18 000 ₸</div>
             </div>
 
             <a id="sendOrderBtn" href="https://wa.me/77072346292?text=Привет,%20Мухаммад!%20Посчитал%20на%20сайте: Принт А4 / грудь, 10 шт." target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-slate-900 text-white text-sm font-semibold hover:bg-black transition shrink-0">
-              Отправить расчет →
+               class="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-sky-600 text-white text-sm font-semibold hover:bg-sky-500 transition shrink-0 shadow-lg shadow-sky-600/30">
+              Заказать в WhatsApp →
             </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Два главных направления работы -->
+    <!-- Направления работы -->
     <section id="services" class="space-y-8">
       <div class="max-w-2xl space-y-2">
-        <span class="text-xs font-semibold uppercase tracking-wider text-sky-600">Чем я занимаюсь</span>
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Два направления — один ответственный подход</h2>
+        <span class="text-xs font-semibold uppercase tracking-wider text-sky-400">Чем я занимаюсь</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Два направления — один ответственный подход</h2>
         <p class="text-slate-300">Работаю на совесть: делаю как для себя, без срыва сроков и отговорок.</p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-6">
-        <!-- Карточка 1: Печать -->
-        <div class="bg-white rounded-3xl p-7 border border-slate-200/90 shadow-lg shadow-black/10 space-y-5 flex flex-col justify-between">
+        <!-- Карточка 1 -->
+        <div class="bg-slate-900/90 backdrop-blur-md rounded-3xl p-7 border border-slate-800 shadow-xl space-y-5 flex flex-col justify-between">
           <div class="space-y-4">
-            <div class="w-11 h-11 rounded-2xl bg-sky-50 border border-sky-600/20 text-sky-600 flex items-center justify-center font-bold text-lg">
+            <div class="w-11 h-11 rounded-2xl bg-sky-950 border border-sky-800/50 text-sky-400 flex items-center justify-center font-bold text-lg">
               01
             </div>
-            <h3 class="text-xl font-bold text-slate-900">DTF-печать на одежде и крое</h3>
+            <h3 class="text-xl font-bold text-white">DTF-печать на одежде и крое</h3>
             <p class="text-sm text-slate-300 leading-relaxed">
               Переносим логотипы, иллюстрации и надписи на хлопок, синтетику, футер и смесовые ткани. Принт тянется вместе с тканью и не выцветает.
             </p>
             <ul class="space-y-2 text-sm text-slate-300 pt-1">
               <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
-                <span>Мерч для локальных брендов, магазинов и кофейных точек</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                <span>Мерч для локальных брендов, магазинов и точек</span>
               </li>
               <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
                 <span>Брендирование формы для персонала и рабочих бригад</span>
               </li>
               <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-sky-600"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
                 <span>Печать готовых трансферов в рулоне для швейных цехов</span>
               </li>
             </ul>
           </div>
-          <div class="pt-4 border-t border-slate-100">
+          <div class="pt-4 border-t border-slate-800">
             <a href="https://wa.me/77072346292?text=Привет,%20Мухаммад!%20Интересует%20DTF-печать" target="_blank" rel="noopener"
-               class="text-sm font-semibold text-sky-600 hover:text-sky-500 inline-flex items-center gap-1">
+               class="text-sm font-semibold text-sky-400 hover:text-sky-300 inline-flex items-center gap-1">
               Скинуть макет на проверку →
             </a>
           </div>
         </div>
 
-        <!-- Карточка 2: Настройка принтеров -->
-        <div class="bg-white rounded-3xl p-7 border border-slate-200/90 shadow-lg shadow-black/10 space-y-5 flex flex-col justify-between">
+        <!-- Карточка 2 -->
+        <div class="bg-slate-900/90 backdrop-blur-md rounded-3xl p-7 border border-slate-800 shadow-xl space-y-5 flex flex-col justify-between">
           <div class="space-y-4">
-            <div class="w-11 h-11 rounded-2xl bg-amber-50 border border-amber-600/20 text-amber-600 flex items-center justify-center font-bold text-lg">
+            <div class="w-11 h-11 rounded-2xl bg-amber-950 border border-amber-800/50 text-amber-400 flex items-center justify-center font-bold text-lg">
               02
             </div>
-            <h3 class="text-xl font-bold text-slate-900">Настройка и сервис DTF-принтеров</h3>
+            <h3 class="text-xl font-bold text-white">Настройка и сервис DTF-принтеров</h3>
             <p class="text-sm text-slate-300 leading-relaxed">
               Знаю железо изнутри. Помогу запустить новый станок с нуля или привести в чувство действующий принтер, если начали полосить дюзы или ушли цвета.
             </p>
             <ul class="space-y-2 text-sm text-slate-300 pt-1">
               <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                <span>Первичный запуск, сборка и калибровка печатающих голов</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                <span>Первичный запуск, сборка и калибровка голов</span>
               </li>
               <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                <span>Настройка RIP-программ и построение точных цветовых профилей (ICC)</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                <span>Настройка RIP-программ и цветовых профилей (ICC)</span>
               </li>
               <li class="flex items-center gap-2.5">
-                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                <span>Чистка тракта, замена демпферов, парковки и настройка шейкер-сушки</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                <span>Чистка тракта, замена демпферов и парковки</span>
               </li>
             </ul>
           </div>
-          <div class="pt-4 border-t border-slate-100">
+          <div class="pt-4 border-t border-slate-800">
             <a href="https://wa.me/77072346292?text=Привет,%20Мухаммад!%20Нужна%20помощь%20с%20принтером" target="_blank" rel="noopener"
-               class="text-sm font-semibold text-amber-600 hover:text-amber-500 inline-flex items-center gap-1">
+               class="text-sm font-semibold text-amber-400 hover:text-amber-300 inline-flex items-center gap-1">
               Вызвать мастера / проконсультироваться →
             </a>
           </div>
@@ -276,21 +252,21 @@
       </div>
     </section>
 
-    <!-- Финальный призыв -->
-    <section class="bg-sky-600 rounded-3xl p-8 sm:p-10 text-white text-center space-y-5 shadow-2xl shadow-sky-900/30">
+    <!-- Финальный блок -->
+    <section class="bg-sky-600 rounded-3xl p-8 sm:p-10 text-white text-center space-y-5 shadow-2xl shadow-sky-900/50">
       <h2 class="text-2xl sm:text-3xl font-extrabold max-w-xl mx-auto">
         Есть макет для печати или капризничает DTF-принтер?
       </h2>
       <p class="text-sm sm:text-base text-sky-100 max-w-lg mx-auto">
-        Напишите в WhatsApp — посмотрю файл, подскажу по подготовке к печати или договоримся о выезде на диагностику станка.
+        Напишите в WhatsApp — посмотрю файл, подскажу по подготовке к печати или договоримся о выезде на диагностику станка в Таразе.
       </p>
       <div class="pt-2 flex flex-wrap justify-center gap-3">
         <a href="https://wa.me/77072346292?text=Привет,%20Мухаммад!%20Пишу%20с%20твоего%20сайта" target="_blank" rel="noopener"
-           class="px-7 py-3.5 rounded-xl bg-white text-sky-600 font-bold hover:bg-gray-200 transition shadow-md shadow-black/10">
+           class="px-7 py-3.5 rounded-xl bg-white text-sky-700 font-bold hover:bg-slate-100 transition shadow-lg">
           Написать в WhatsApp
         </a>
         <a href="tel:+77072346292"
-           class="px-7 py-3.5 rounded-xl bg-sky-700/60 text-white font-semibold border border-sky-400/40 hover:bg-sky-700 transition">
+           class="px-7 py-3.5 rounded-xl bg-sky-700 text-white font-semibold border border-sky-500 hover:bg-sky-800 transition">
           Позвонить напрямую
         </a>
       </div>
@@ -299,12 +275,12 @@
   </main>
 
   <!-- Подвал -->
-  <footer class="border-t border-slate-700 bg-slate-900 mt-12">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+  <footer class="border-t border-slate-800 bg-slate-950 mt-12">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-400">
       <div>© 2026 Мухаммад • DTF-печать и сервис принтеров • Тараз</div>
       <div class="flex items-center gap-5">
-        <a href="https://wa.me/77072346292" target="_blank" rel="noopener" class="hover:text-sky-500 transition">WhatsApp</a>
-        <a href="tel:+77072346292" class="hover:text-sky-500 transition">Позвонить</a>
+        <a href="https://wa.me/77072346292" target="_blank" rel="noopener" class="hover:text-sky-400 transition">WhatsApp</a>
+        <a href="tel:+77072346292" class="hover:text-sky-400 transition">Позвонить</a>
       </div>
     </div>
   </footer>
@@ -318,7 +294,6 @@
     const discountBadge = document.getElementById('discountBadge');
     const sendOrderBtn = document.getElementById('sendOrderBtn');
 
-    // Номер Мухаммада из запроса
     const phone = '77072346292';
 
     let currentPrice = 1800;
@@ -332,7 +307,7 @@
       let discount = 0;
       if (qty >= 50) {
         discount = 0.25;
-      } else if (qty >= 25) { // Поменял условие на 25 для соответствия тексту
+      } else if (qty >= 25) {
         discount = 0.15;
       }
 
@@ -358,11 +333,11 @@
     formatBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         formatBtns.forEach(b => {
-          b.classList.remove('active', 'border-2', 'border-sky-600', 'bg-sky-50/60');
-          b.classList.add('border', 'border-slate-200', 'bg-white');
+          b.classList.remove('active', 'border-2', 'border-sky-500', 'bg-sky-950/60');
+          b.classList.add('border', 'border-slate-800', 'bg-slate-900/60');
         });
-        btn.classList.add('active', 'border-2', 'border-sky-600', 'bg-sky-50/60');
-        btn.classList.remove('border', 'border-slate-200', 'bg-white');
+        btn.classList.add('active', 'border-2', 'border-sky-500', 'bg-sky-950/60');
+        btn.classList.remove('border', 'border-slate-800', 'bg-slate-900/60');
 
         currentPrice = parseInt(btn.dataset.price, 10);
         currentUnit = btn.dataset.unit;
