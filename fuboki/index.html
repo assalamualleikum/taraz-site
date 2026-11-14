@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUBOKI — Студия DTF-печати и оверсайз одежды в Таразе</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            obsidian: '#08090D',
+            panel: '#101218',
+            card: '#151821',
+            cyanNeo: '#38BDF8',
+            crimsonNeo: '#F43F5E',
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #08090D;
+      color: #F4F7FB;
+      font-family: 'Inter', sans-serif;
+    }
+    .neo-grid {
+      background-image:
+        linear-gradient(to right, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .neo-glow {
+      box-shadow: 0 0 32px -8px rgba(56, 189, 248, 0.25);
+    }
+    .canvas-stage-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 1 / 1.12;
+      margin: 0 auto;
+      user-select: none;
+    }
+    .garment-svg-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .print-zone-box {
+      position: absolute;
+      left: 50%;
+      top: 46%;
+      transform: translate(-50%, -50%);
+      border: 1.5px dashed rgba(56, 189, 248, 0.7);
+      border-radius: 6px;
+      box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: width 0.2s ease, height 0.2s ease;
+    }
+    .print-zone-badge {
+      position: absolute;
+      top: -22px;
+      left: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #38BDF8;
+      background: rgba(8, 9, 13, 0.85);
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .canvas-container {
+      margin: 0 auto !important;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-cyanNeo selection:text-obsidian">
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2 rounded-xl border border-cyanNeo/40 bg-panel/95 px-4 py-3 text-sm font-medium text-white shadow-2xl backdrop-blur">
+    <span class="h-2 w-2 rounded-full bg-cyanNeo"></span>
+    <span id="toast-text">Готово</span>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-obsidian/85 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6">
+      <a href="#top" class="flex items-center gap-3">
+        <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-cyanNeo/40 bg-cyanNeo/10 font-mono text-sm font-bold text-cyanNeo">
+          FB
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-base font-extrabold tracking-wider text-white">FUBOKI</span>
+            <span class="hidden rounded bg-crimsonNeo/20 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-crimsonNeo sm:inline-block">吹雪 // DTF</span>
+          </div>
+          <p class="font-mono text-[11px] text-slate-400">Тараз · мкр. Акбулак 1</p>
+        </div>
+      </a>
+
+      <nav class="hidden items-center gap-6 text-sm font-medium text-slate-300 md:flex">
+        <a href="#customizer" class="transition hover:text-cyanNeo">Конструктор</a>
+        <a href="#pricing" class="transition hover:text-cyanNeo">Прайс</a>
+        <a href="#specs" class="transition hover:text-cyanNeo">Требования к макетам</a>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href="#customizer" class="rounded-lg bg-cyanNeo px-3.5 py-2 text-xs font-bold text-obsidian transition hover:bg-sky-300 sm:text-sm">
+          Собрать принт
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="top" class="neo-grid relative overflow-hidden border-b border-white/10">
+    <div class="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-12 lg:items-center lg:py-16">
+      <div class="lg:col-span-7">
+        <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-cyanNeo/30 bg-cyanNeo/10 px-3 py-1 font-mono text-xs text-cyanNeo">
+          <span class="h-1.5 w-1.5 rounded-full bg-cyanNeo"></span>
+          DTF-ПЕЧАТЬ И ОВЕРСАЙЗ ОДЕЖДА // ТАРАЗ
+        </div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:leading-[1.1]">
+          Твой принт на оверсайз-базе <span class="text-cyanNeo">Fuboki</span> или на своей одежде
+        </h1>
+        <p class="mt-4 max-w-2xl text-base text-slate-300 sm:text-lg">
+          Студия DTF-печати в Таразе (мкр. Акбулак 1). Плотный оверсайз-крой в наличии, стойкий перенос на любую ткань и печать готовых принтов поштучно или метражом.
+        </p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <a href="#customizer" class="inline-flex items-center justify-center rounded-xl bg-cyanNeo px-5 py-3 text-sm font-bold text-obsidian transition hover:bg-sky-300">
+            Открыть конструктор
+          </a>
+          <a href="#pricing" class="inline-flex items-center justify-center rounded-xl border border-white/15 bg-panel px-5 py-3 text-sm font-semibold text-white transition hover:border-cyanNeo/50">
+            Смотреть цены
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 lg:col-span-5">
+        <div class="rounded-2xl border border-white/10 bg-panel/90 p-4">
+          <div class="font-mono text-xs text-slate-400">01 // БАЗА + ПРИНТ</div>
+          <div class="mt-2 text-2xl font-extrabold text-white">от 13 000 ₸</div>
+          <p class="mt-1 text-xs text-slate-400">Оверсайз футболки, свитшоты и худи в наличии</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-panel/90 p-4">
+          <div class="font-mono text-xs text-slate-400">02 // НА СВОЮ ОДЕЖДУ</div>
+          <div class="mt-2 text-2xl font-extrabold text-cyanNeo">от 1 500 ₸</div>
+          <p class="mt-1 text-xs text-slate-400">Форматы 10×10, 20×20, 30×30 см</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-panel/90 p-4">
+          <div class="font-mono text-xs text-slate-400">03 // МЕТРАЖОМ</div>
+          <div class="mt-2 text-2xl font-extrabold text-white">7 000 ₸</div>
+          <p class="mt-1 text-xs text-slate-400">Рулонная плёнка 30 см × 1 метр</p>
+        </div>
+        <div class="rounded-2xl border border-crimsonNeo/30 bg-panel/90 p-4">
+          <div class="font-mono text-xs text-crimsonNeo">04 // ЭКСПОРТ МАКЕТА</div>
+          <div class="mt-2 text-lg font-extrabold text-white">PNG 300 DPI / SVG</div>
+          <p class="mt-1 text-xs text-slate-400">Готово для печати и импорта в CorelDRAW 17</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Customizer -->
+  <section id="customizer" class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+      <div>
+        <div class="font-mono text-xs font-semibold uppercase tracking-widest text-cyanNeo">FUBOKI STUDIO // КОНСТРУКТОР</div>
+        <h2 class="mt-1 text-2xl font-extrabold text-white sm:text-3xl">Примерь принт и рассчитай стоимость</h2>
+      </div>
+      <div class="font-mono text-xs text-slate-400">
+        Загрузи картинку, добавь текст и перетащи в область печати
+      </div>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-12">
+      <!-- Left Column: Controls -->
+      <div class="space-y-5 rounded-2xl border border-white/10 bg-panel p-5 lg:col-span-4">
+        <!-- Garment Type -->
+        <div>
+          <label class="mb-2 block font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">1. Основа</label>
+          <div class="grid grid-cols-2 gap-2" id="garment-buttons">
+            <button type="button" data-garment="tee" class="garment-btn rounded-xl border border-cyanNeo bg-cyanNeo/15 px-3 py-2.5 text-left transition">
+              <div class="text-xs font-bold text-white">Футболка оверсайз</div>
+              <div class="font-mono text-[11px] text-cyanNeo">13 000 ₸ с принтом</div>
+            </button>
+            <button type="button" data-garment="sweatshirt" class="garment-btn rounded-xl border border-white/10 bg-card px-3 py-2.5 text-left transition hover:border-white/25">
+              <div class="text-xs font-bold text-white">Свитшот оверсайз</div>
+              <div class="font-mono text-[11px] text-slate-400">16 000 ₸ с принтом</div>
+            </button>
+            <button type="button" data-garment="hoodie" class="garment-btn rounded-xl border border-white/10 bg-card px-3 py-2.5 text-left transition hover:border-white/25">
+              <div class="text-xs font-bold text-white">Худи оверсайз</div>
+              <div class="font-mono text-[11px] text-slate-400">19 000 ₸ с принтом</div>
+            </button>
+            <button type="button" data-garment="byog" class="garment-btn rounded-xl border border-white/10 bg-card px-3 py-2.5 text-left transition hover:border-white/25">
+              <div class="text-xs font-bold text-white">Своя одежда</div>
+              <div class="font-mono text-[11px] text-slate-400">Только печать</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Color & Side -->
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <div>
+            <label class="mb-2 block font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">2. Цвет ткани (<span id="color-name-label" class="text-white">Чёрный</span>)</label>
+            <div class="flex flex-wrap gap-2.5" id="color-swatches">
+              <button type="button" data-color="#14161B" data-name="Чёрный" class="color-swatch h-8 w-8 rounded-full border-2 border-cyanNeo ring-2 ring-cyanNeo/30" style="background-color:#14161B" title="Чёрный"></button>
+              <button type="button" data-color="#2B303A" data-name="Графит" class="color-swatch h-8 w-8 rounded-full border border-white/20" style="background-color:#2B303A" title="Графит"></button>
+              <button type="button" data-color="#EAE6DF" data-name="Молочный" class="color-swatch h-8 w-8 rounded-full border border-white/20" style="background-color:#EAE6DF" title="Молочный"></button>
+              <button type="button" data-color="#354032" data-name="Хаки / Олива" class="color-swatch h-8 w-8 rounded-full border border-white/20" style="background-color:#354032" title="Хаки"></button>
+              <button type="button" data-color="#1A2438" data-name="Тёмно-синий" class="color-swatch h-8 w-8 rounded-full border border-white/20" style="background-color:#1A2438" title="Тёмно-синий"></button>
+            </div>
+          </div>
+
+          <div>
+            <label class="mb-2 block font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">3. Сторона нанесения</label>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" id="side-front" class="rounded-xl border border-cyanNeo bg-cyanNeo/15 py-2 text-xs font-bold text-white transition">Грудь (Перед)</button>
+              <button type="button" id="side-back" class="rounded-xl border border-white/10 bg-card py-2 text-xs font-semibold text-slate-300 transition hover:border-white/25">Спина</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print Format -->
+        <div>
+          <label class="mb-2 block font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">4. Формат принта</label>
+          <div class="grid grid-cols-2 gap-2" id="format-buttons">
+            <button type="button" data-format="10x10" class="format-btn rounded-xl border border-white/10 bg-card px-3 py-2 text-left transition hover:border-white/25">
+              <div class="text-xs font-bold text-white">10 × 10 см</div>
+              <div class="font-mono text-[11px] text-slate-400">1 500 ₸</div>
+            </button>
+            <button type="button" data-format="20x20" class="format-btn rounded-xl border border-white/10 bg-card px-3 py-2 text-left transition hover:border-white/25">
+              <div class="text-xs font-bold text-white">20 × 20 см</div>
+              <div class="font-mono text-[11px] text-slate-400">2 500 ₸</div>
+            </button>
+            <button type="button" data-format="30x30" class="format-btn rounded-xl border border-cyanNeo bg-cyanNeo/15 px-3 py-2 text-left transition">
+              <div class="text-xs font-bold text-white">30 × 30 см</div>
+              <div class="font-mono text-[11px] text-cyanNeo">3 500 ₸</div>
+            </button>
+            <button type="button" data-format="meter" class="format-btn rounded-xl border border-white/10 bg-card px-3 py-2 text-left transition hover:border-white/25">
+              <div class="text-xs font-bold text-white">30 см × 1 м</div>
+              <div class="font-mono text-[11px] text-slate-400">7 000 ₸</div>
+            </button>
+          </div>
+          <p id="format-hint" class="mt-2 text-[11px] text-slate-400">
+            При заказе одежды Fuboki принт на 1 сторону уже включён в цену.
+          </p>
+        </div>
+
+        <!-- Upload & Text Tools -->
+        <div class="space-y-3 border-t border-white/10 pt-4">
+          <label class="block font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">5. Свой дизайн</label>
+          <label class="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-cyanNeo/50 bg-cyanNeo/10 px-4 py-2.5 text-xs font-bold text-cyanNeo transition hover:bg-cyanNeo/20">
+            <span>Загрузить PNG / JPG / SVG</span>
+            <input id="image-upload" type="file" accept="image/*,.svg" class="hidden" />
+          </label>
+
+          <div class="flex gap-2">
+            <input id="text-input" type="text" placeholder="Надпись (напр. FUBOKI)" class="w-full rounded-xl border border-white/15 bg-obsidian px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-cyanNeo focus:outline-none" />
+            <input id="text-color" type="color" value="#38BDF8" class="h-9 w-10 shrink-0 cursor-pointer rounded-lg border border-white/15 bg-obsidian p-0.5" title="Цвет текста" />
+            <button type="button" id="add-text-btn" class="shrink-0 rounded-xl bg-white/10 px-3 py-2 text-xs font-bold text-white transition hover:bg-white/20">
+              + Текст
+            </button>
+          </div>
+
+          <div>
+            <div class="mb-1.5 text-[11px] text-slate-400">Быстрый тест — готовые стикеры Neo-Tokyo:</div>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" data-preset="oni" class="preset-btn rounded-lg border border-white/10 bg-card px-2.5 py-1 font-mono text-[11px] text-slate-300 hover:border-cyanNeo/50 hover:text-white">+ Штамп FUBOKI</button>
+              <button type="button" data-preset="cyber" class="preset-btn rounded-lg border border-white/10 bg-card px-2.5 py-1 font-mono text-[11px] text-slate-300 hover:border-cyanNeo/50 hover:text-white">+ Neo-Kanji</button>
+              <button type="button" data-preset="taraz" class="preset-btn rounded-lg border border-white/10 bg-card px-2.5 py-1 font-mono text-[11px] text-slate-300 hover:border-cyanNeo/50 hover:text-white">+ TARAZ 08</button>
+            </div>
+          </div>
+
+          <div class="flex gap-2 pt-1">
+            <button type="button" id="delete-obj-btn" class="flex-1 rounded-lg border border-white/10 bg-card py-1.5 text-xs text-slate-300 hover:border-crimsonNeo/50 hover:text-crimsonNeo">Удалить выбранное</button>
+            <button type="button" id="clear-canvas-btn" class="flex-1 rounded-lg border border-white/10 bg-card py-1.5 text-xs text-slate-300 hover:border-white/30 hover:text-white">Очистить макет</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Column: Interactive Mockup -->
+      <div class="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-panel p-4 sm:p-6 lg:col-span-5 neo-grid">
+        <div class="mb-3 flex w-full items-center justify-between font-mono text-xs text-slate-400">
+          <span id="stage-label">Футболка оверсайз · Грудь</span>
+          <span id="zone-cm-label" class="text-cyanNeo">Зона: 30 × 30 см</span>
+        </div>
+
+        <div class="canvas-stage-wrapper">
+          <!-- Dynamic SVG Garment Silhouette -->
+          <svg id="garment-svg" class="garment-svg-layer" viewBox="0 0 400 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Filled dynamically by JS -->
+          </svg>
+
+          <!-- Print Zone & Fabric Canvas -->
+          <div id="print-zone-box" class="print-zone-box" style="width: 190px; height: 190px;">
+            <span id="print-zone-badge" class="print-zone-badge">30 × 30 см</span>
+            <canvas id="design-canvas" width="190" height="190"></canvas>
+          </div>
+        </div>
+
+        <p class="mt-3 text-center text-[11px] text-slate-400">
+          Тяните за углы рамки внутри области печати, чтобы изменить размер или повернуть принт.
+        </p>
+      </div>
+
+      <!-- Right Column: Order & Export -->
+      <div class="flex flex-col justify-between space-y-5 rounded-2xl border border-white/10 bg-panel p-5 lg:col-span-3">
+        <div class="space-y-4">
+          <div class="font-mono text-xs font-semibold uppercase tracking-wider text-slate-400">Параметры заказа</div>
+
+          <!-- Size & Qty -->
+          <div id="size-block">
+            <label class="mb-1.5 block text-xs text-slate-300">Размер (Оверсайз)</label>
+            <div class="grid grid-cols-5 gap-1.5" id="size-buttons">
+              <button type="button" data-size="S" class="size-btn rounded-lg border border-white/10 bg-card py-1.5 font-mono text-xs text-slate-300">S</button>
+              <button type="button" data-size="M" class="size-btn rounded-lg border border-white/10 bg-card py-1.5 font-mono text-xs text-slate-300">M</button>
+              <button type="button" data-size="L" class="size-btn rounded-lg border border-cyanNeo bg-cyanNeo/15 py-1.5 font-mono text-xs font-bold text-white">L</button>
+              <button type="button" data-size="XL" class="size-btn rounded-lg border border-white/10 bg-card py-1.5 font-mono text-xs text-slate-300">XL</button>
+              <button type="button" data-size="2XL" class="size-btn rounded-lg border border-white/10 bg-card py-1.5 font-mono text-xs text-slate-300">2XL</button>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-slate-300">Количество</span>
+            <div class="flex items-center gap-2 rounded-xl border border-white/15 bg-obsidian px-2 py-1">
+              <button type="button" id="qty-minus" class="h-6 w-6 rounded text-sm font-bold text-slate-300 hover:bg-white/10">−</button>
+              <span id="qty-val" class="w-6 text-center font-mono text-sm font-bold text-white">1</span>
+              <button type="button" id="qty-plus" class="h-6 w-6 rounded text-sm font-bold text-slate-300 hover:bg-white/10">+</button>
+            </div>
+          </div>
+
+          <label class="flex cursor-pointer items-start gap-2.5 rounded-xl border border-white/10 bg-card p-3">
+            <input id="second-side-toggle" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-white/20 accent-cyanNeo" />
+            <span class="text-xs leading-snug text-slate-300">
+              Дополнительный принт на вторую сторону <span id="extra-side-price" class="font-mono text-cyanNeo">(+3 500 ₸)</span>
+            </span>
+          </label>
+
+          <!-- Price Summary -->
+          <div class="rounded-xl border border-cyanNeo/25 bg-obsidian p-4">
+            <div class="flex items-center justify-between text-xs text-slate-400">
+              <span id="summary-item-label">Футболка оверсайз</span>
+              <span id="summary-base-price" class="font-mono text-slate-200">13 000 ₸</span>
+            </div>
+            <div id="summary-extra-row" class="mt-1.5 hidden items-center justify-between text-xs text-slate-400">
+              <span>Доп. сторона (<span id="summary-format-name">30×30</span>)</span>
+              <span id="summary-extra-price" class="font-mono text-slate-200">0 ₸</span>
+            </div>
+            <div class="mt-3 flex items-baseline justify-between border-t border-white/10 pt-3">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Итого</span>
+              <span id="total-price" class="font-mono text-2xl font-extrabold text-cyanNeo">13 000 ₸</span>
+            </div>
+          </div>
+
+          <!-- Send Order -->
+          <div class="space-y-2">
+            <a id="whatsapp-order-btn" href="#" target="_blank" rel="noopener noreferrer" class="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-500 px-4 py-3 text-sm font-bold text-obsidian transition hover:bg-emerald-400">
+              Заказать в WhatsApp
+            </a>
+            <div class="grid grid-cols-2 gap-2">
+              <a href="https://t.me/+77072346292" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center rounded-xl border border-cyanNeo/40 bg-cyanNeo/10 px-3 py-2.5 text-xs font-bold text-cyanNeo transition hover:bg-cyanNeo/20">
+                Telegram
+              </a>
+              <button type="button" id="copy-order-btn" class="rounded-xl border border-white/15 bg-card px-3 py-2.5 text-xs font-semibold text-white transition hover:border-white/30">
+                Копировать текст
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Export Print-Ready Files -->
+        <div class="border-t border-white/10 pt-4">
+          <div class="mb-2 flex items-center justify-between">
+            <span class="font-mono text-[11px] font-semibold uppercase tracking-wider text-slate-400">Файлы для печати</span>
+            <span class="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px] text-cyanNeo">300 DPI / CDR17</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" id="export-png-btn" class="rounded-xl border border-white/15 bg-card px-2.5 py-2 text-xs font-semibold text-white transition hover:border-cyanNeo/50">
+              PNG без фона
+            </button>
+            <button type="button" id="export-svg-btn" class="rounded-xl border border-white/15 bg-card px-2.5 py-2 text-xs font-semibold text-white transition hover:border-cyanNeo/50">
+              SVG (Corel 17)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Table -->
+  <section id="pricing" class="border-t border-white/10 bg-panel/40">
+    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <div class="mb-8">
+        <div class="font-mono text-xs font-semibold uppercase tracking-widest text-cyanNeo">ПРАЙС-ЛИСТ // FUBOKI</div>
+        <h2 class="mt-1 text-2xl font-extrabold text-white sm:text-3xl">Честные цены без скрытых доплат</h2>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-2">
+        <!-- Apparel with prints -->
+        <div class="rounded-2xl border border-white/10 bg-panel p-6">
+          <h3 class="text-lg font-bold text-white">Базовая оверсайз-одежда с принтами</h3>
+          <p class="mt-1 text-xs text-slate-400">В стоимость уже входит изделие в наличии и DTF-принт</p>
+          <div class="mt-5 space-y-3">
+            <div class="flex items-center justify-between rounded-xl border border-white/5 bg-card px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Футболка оверсайз</div>
+                <div class="text-xs text-slate-400">Плотный хлопок, свободный крой</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-cyanNeo">13 000 ₸</div>
+            </div>
+            <div class="flex items-center justify-between rounded-xl border border-white/5 bg-card px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Свитшот оверсайз</div>
+                <div class="text-xs text-slate-400">Качественный футер, держит форму</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-cyanNeo">16 000 ₸</div>
+            </div>
+            <div class="flex items-center justify-between rounded-xl border border-white/5 bg-card px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Худи оверсайз</div>
+                <div class="text-xs text-slate-400">Глубокий капюшон, плотная ткань</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-cyanNeo">19 000 ₸</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Print formats -->
+        <div class="rounded-2xl border border-white/10 bg-panel p-6">
+          <h3 class="text-lg font-bold text-white">DTF-печать по форматам и нанесение</h3>
+          <p class="mt-1 text-xs text-slate-400">Печатаем на вашей одежде или отдаём готовой плёнкой</p>
+          <div class="mt-5 space-y-3">
+            <div class="flex items-center justify-between rounded-xl border border-white/5 bg-card px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Формат 10 × 10 см</div>
+                <div class="text-xs text-slate-400">Логотип на грудь, рукав или шею</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-white">1 500 ₸</div>
+            </div>
+            <div class="flex items-center justify-between rounded-xl border border-white/5 bg-card px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Формат 20 × 20 см</div>
+                <div class="text-xs text-slate-400">Средний принт на грудь</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-white">2 500 ₸</div>
+            </div>
+            <div class="flex items-center justify-between rounded-xl border border-white/5 bg-card px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Формат 30 × 30 см</div>
+                <div class="text-xs text-slate-400">Крупный принт на грудь или спину</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-white">3 500 ₸</div>
+            </div>
+            <div class="flex items-center justify-between rounded-xl border border-cyanNeo/30 bg-cyanNeo/5 px-4 py-3">
+              <div>
+                <div class="text-sm font-bold text-white">Метражом: 30 см × 1 метр</div>
+                <div class="text-xs text-slate-400">Для брендов, мерча и нескольких принтов на одном листе</div>
+              </div>
+              <div class="font-mono text-lg font-extrabold text-cyanNeo">7 000 ₸</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Specs -->
+  <section id="specs" class="border-t border-white/10">
+    <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="rounded-2xl border border-white/10 bg-panel p-5">
+          <div class="font-mono text-xs text-cyanNeo">FORMAT // PNG 300 DPI</div>
+          <h4 class="mt-2 text-sm font-bold text-white">Прозрачный фон</h4>
+          <p class="mt-1 text-xs text-slate-400">Для идеальной печати отправляйте PNG без фона в реальном размере. Конструктор выше сохраняет макет именно так.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-panel p-5">
+          <div class="font-mono text-xs text-cyanNeo">VECTOR // CORELDRAW 17</div>
+          <h4 class="mt-2 text-sm font-bold text-white">Векторные макеты</h4>
+          <p class="mt-1 text-xs text-slate-400">Принимаем макеты CorelDRAW (до X7 / 17 версии, шрифты в кривых) или SVG. Экспорт из конструктора открывается в CorelDRAW напрямую.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 bg-panel p-5">
+          <div class="font-mono text-xs text-cyanNeo">LOCATION // TARAZ</div>
+          <h4 class="mt-2 text-sm font-bold text-white">Самовывоз и примерка</h4>
+          <p class="mt-1 text-xs text-slate-400">г. Тараз, мкр. Акбулак 1. Напишите нам в WhatsApp или Telegram перед визитом, чтобы обсудить макет и время.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-panel/60">
+    <div class="mx-auto flex max-w-7xl flex-col items-start justify-between gap-4 px-4 py-8 sm:flex-row sm:items-center sm:px-6">
+      <div>
+        <div class="text-base font-extrabold tracking-wider text-white">FUBOKI <span class="font-mono text-xs font-normal text-cyanNeo">// DTF STUDIO</span></div>
+        <div class="mt-1 text-xs text-slate-400">г. Тараз, мкр. Акбулак 1 · +7 707 234 62 92</div>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a id="footer-wa" href="https://wa.me/77072346292?text=%D0%90%D1%81%D1%81%D0%B0%D0%BB%D0%B0%D0%BC%20%D1%83%D0%B0%D0%BB%D0%B5%D0%B9%D0%BA%D1%83%D0%BC%2C%20%D1%85%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C%20%D0%BF%D1%80%D0%B8%D0%BD%D1%82%D1%8B" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 hover:bg-emerald-500/20">WhatsApp</a>
+        <a href="https://t.me/+77072346292" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-cyanNeo/40 bg-cyanNeo/10 px-3 py-1.5 text-xs font-semibold text-cyanNeo hover:bg-cyanNeo/20">Telegram</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const PHONE = '77072346292';
+    const GREETING = 'Ассалам уалейкум, хочу заказать принты';
+
+    const GARMENTS = {
+      tee: { name: 'Футболка оверсайз', price: 13000 },
+      sweatshirt: { name: 'Свитшот оверсайз', price: 16000 },
+      hoodie: { name: 'Худи оверсайз', price: 19000 },
+      byog: { name: 'Своя одежда клиента', price: 0 }
+    };
+
+    const FORMATS = {
+      '10x10': { label: '10 × 10 см', price: 1500, box: 110 },
+      '20x20': { label: '20 × 20 см', price: 2500, box: 150 },
+      '30x30': { label: '30 × 30 см', price: 3500, box: 190 },
+      'meter': { label: '30 см × 1 метр (метраж)', price: 7000, box: 205 }
+    };
+
+    const state = {
+      garment: 'tee',
+      color: '#14161B',
+      colorName: 'Чёрный',
+      side: 'front',
+      format: '30x30',
+      size: 'L',
+      qty: 1,
+      secondSide: false,
+      savedSides: { front: null, back: null }
+    };
+
+    const canvas = new fabric.Canvas('design-canvas', {
+      preserveObjectStacking: true,
+      backgroundColor: 'transparent'
+    });
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').textContent = msg;
+      toast.classList.remove('hidden');
+      toast.classList.add('flex');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+        toast.classList.remove('flex');
+      }, 2600);
+    }
+
+    function formatKZT(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' ₸';
+    }
+
+    function renderGarmentSVG() {
+      const svg = document.getElementById('garment-svg');
+      const fill = state.color;
+      const stroke = state.color === '#EAE6DF' ? '#B9B4AA' : '#3A4150';
+      const isBack = state.side === 'back';
+
+      let shape = '';
+      if (state.garment === 'tee' || state.garment === 'byog') {
+        const neck = isBack
+          ? '<path d="M158 56 Q200 66 242 56" stroke="' + stroke + '" stroke-width="2" fill="none"/>'
+          : '<path d="M158 56 Q200 84 242 56" stroke="' + stroke + '" stroke-width="2" fill="none"/>';
+        shape = `
+          <path d="M158 56 L112 72 L44 136 L82 182 L114 152 L114 396 L286 396 L286 152 L318 182 L356 136 L288 72 L242 56 Q200 72 158 56 Z" fill="${fill}" stroke="${stroke}" stroke-width="2.5" stroke-linejoin="round"/>
+          ${neck}
+          <line x1="114" y1="384" x2="286" y2="384" stroke="${stroke}" stroke-width="1.2" stroke-dasharray="4 4"/>
+        `;
+      } else if (state.garment === 'sweatshirt') {
+        const neck = isBack
+          ? '<path d="M154 58 Q200 70 246 58" stroke="' + stroke + '" stroke-width="3" fill="none"/>'
+          : '<path d="M154 58 Q200 88 246 58" stroke="' + stroke + '" stroke-width="3" fill="none"/>';
+        shape = `
+          <path d="M154 58 L108 76 L34 210 L68 232 L112 146 L112 396 L288 396 L288 146 L332 232 L366 210 L292 76 L246 58 Q200 74 154 58 Z" fill="${fill}" stroke="${stroke}" stroke-width="2.5" stroke-linejoin="round"/>
+          ${neck}
+          <rect x="112" y="376" width="176" height="20" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+        `;
+      } else if (state.garment === 'hoodie') {
+        const hood = isBack
+          ? '<path d="M150 66 Q200 18 250 66 Q230 108 200 112 Q170 108 150 66 Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2.5"/>'
+          : '<path d="M152 62 Q200 24 248 62 Q226 92 200 94 Q174 92 152 62 Z" fill="' + fill + '" stroke="' + stroke + '" stroke-width="2.5"/><line x1="186" y1="88" x2="186" y2="128" stroke="' + stroke + '" stroke-width="2"/><line x1="214" y1="88" x2="214" y2="128" stroke="' + stroke + '" stroke-width="2"/>';
+        const pocket = isBack ? '' : '<path d="M142 308 L258 308 L270 364 L130 364 Z" fill="none" stroke="' + stroke + '" stroke-width="1.5"/>';
+        shape = `
+          <path d="M152 62 L106 80 L30 218 L66 240 L110 152 L110 398 L290 398 L290 152 L334 240 L370 218 L294 80 L248 62 Z" fill="${fill}" stroke="${stroke}" stroke-width="2.5" stroke-linejoin="round"/>
+          ${hood}
+          ${pocket}
+          <rect x="110" y="378" width="180" height="20" rx="2" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+        `;
+      }
+      svg.innerHTML = shape;
+    }
+
+    function updatePrintZone() {
+      const fmt = FORMATS[state.format];
+      const box = document.getElementById('print-zone-box');
+      box.style.width = fmt.box + 'px';
+      box.style.height = fmt.box + 'px';
+      canvas.setWidth(fmt.box);
+      canvas.setHeight(fmt.box);
+      canvas.renderAll();
+
+      document.getElementById('print-zone-badge').textContent = fmt.label;
+      document.getElementById('zone-cm-label').textContent = 'Зона: ' + fmt.label;
+    }
+
+    function updateSummary() {
+      const g = GARMENTS[state.garment];
+      const f = FORMATS[state.format];
+      const isBYOG = state.garment === 'byog';
+
+      document.getElementById('stage-label').textContent =
+        g.name + ' · ' + (state.side === 'front' ? 'Грудь' : 'Спина');
+
+      const sizeBlock = document.getElementById('size-block');
+      sizeBlock.style.opacity = isBYOG ? '0.45' : '1';
+
+      let unitPrice = 0;
+      let extraPrice = 0;
+
+      if (isBYOG) {
+        unitPrice = f.price;
+        document.getElementById('summary-item-label').textContent = 'Печать ' + f.label;
+        document.getElementById('summary-base-price').textContent = formatKZT(unitPrice);
+        document.getElementById('format-hint').textContent = 'Нанесение на вашу одежду по выбранному формату.';
+      } else {
+        unitPrice = g.price;
+        document.getElementById('summary-item-label').textContent = g.name + ' (' + state.size + ')';
+        document.getElementById('summary-base-price').textContent = formatKZT(unitPrice);
+        document.getElementById('format-hint').textContent = 'При заказе одежды Fuboki принт на 1 сторону уже включён в цену.';
+      }
+
+      document.getElementById('extra-side-price').textContent = '(+' + formatKZT(f.price) + ')';
+      const extraRow = document.getElementById('summary-extra-row');
+      if (state.secondSide) {
+        extraPrice = f.price;
+        extraRow.classList.remove('hidden');
+        extraRow.classList.add('flex');
+        document.getElementById('summary-format-name').textContent = f.label;
+        document.getElementById('summary-extra-price').textContent = formatKZT(extraPrice);
+      } else {
+        extraRow.classList.add('hidden');
+        extraRow.classList.remove('flex');
+      }
+
+      const total = (unitPrice + extraPrice) * state.qty;
+      document.getElementById('total-price').textContent = formatKZT(total);
+
+      const orderText = buildOrderText(total);
+      document.getElementById('whatsapp-order-btn').href =
+        'https://wa.me/' + PHONE + '?text=' + encodeURIComponent(orderText);
+    }
+
+    function buildOrderText(total) {
+      const g = GARMENTS[state.garment];
+      const f = FORMATS[state.format];
+      const lines = [
+        GREETING + '!',
+        '— Основа: ' + g.name,
+        state.garment !== 'byog' ? '— Цвет: ' + state.colorName + ', Размер: ' + state.size : '— Изделие клиента',
+        '— Формат принта: ' + f.label,
+        '— Сторона: ' + (state.side === 'front' ? 'Грудь' : 'Спина') + (state.secondSide ? ' + вторая сторона' : ''),
+        '— Количество: ' + state.qty + ' шт.',
+        '— Предварительный итог: ' + formatKZT(total)
+      ];
+      return lines.join('\n');
+    }
+
+    // Event bindings
+    document.querySelectorAll('.garment-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.garment = btn.dataset.garment;
+        document.querySelectorAll('.garment-btn').forEach(b => {
+          b.className = 'garment-btn rounded-xl border border-white/10 bg-card px-3 py-2.5 text-left transition hover:border-white/25';
+        });
+        btn.className = 'garment-btn rounded-xl border border-cyanNeo bg-cyanNeo/15 px-3 py-2.5 text-left transition';
+        renderGarmentSVG();
+        updateSummary();
+      });
+    });
+
+    document.querySelectorAll('.color-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.color = btn.dataset.color;
+        state.colorName = btn.dataset.name;
+        document.getElementById('color-name-label').textContent = state.colorName;
+        document.querySelectorAll('.color-swatch').forEach(b => {
+          b.className = 'color-swatch h-8 w-8 rounded-full border border-white/20';
+        });
+        btn.className = 'color-swatch h-8 w-8 rounded-full border-2 border-cyanNeo ring-2 ring-cyanNeo/30';
+        renderGarmentSVG();
+        updateSummary();
+      });
+    });
+
+    function switchSide(newSide) {
+      if (state.side === newSide) return;
+      state.savedSides[state.side] = canvas.toJSON();
+      state.side = newSide;
+      canvas.clear();
+      if (state.savedSides[newSide]) {
+        canvas.loadFromJSON(state.savedSides[newSide], () => canvas.renderAll());
+      }
+      const frontBtn = document.getElementById('side-front');
+      const backBtn = document.getElementById('side-back');
+      if (newSide === 'front') {
+        frontBtn.className = 'rounded-xl border border-cyanNeo bg-cyanNeo/15 py-2 text-xs font-bold text-white transition';
+        backBtn.className = 'rounded-xl border border-white/10 bg-card py-2 text-xs font-semibold text-slate-300 transition hover:border-white/25';
+      } else {
+        backBtn.className = 'rounded-xl border border-cyanNeo bg-cyanNeo/15 py-2 text-xs font-bold text-white transition';
+        frontBtn.className = 'rounded-xl border border-white/10 bg-card py-2 text-xs font-semibold text-slate-300 transition hover:border-white/25';
+      }
+      renderGarmentSVG();
+      updateSummary();
+    }
+
+    document.getElementById('side-front').addEventListener('click', () => switchSide('front'));
+    document.getElementById('side-back').addEventListener('click', () => switchSide('back'));
+
+    document.querySelectorAll('.format-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.format = btn.dataset.format;
+        document.querySelectorAll('.format-btn').forEach(b => {
+          b.className = 'format-btn rounded-xl border border-white/10 bg-card px-3 py-2 text-left transition hover:border-white/25';
+        });
+        btn.className = 'format-btn rounded-xl border border-cyanNeo bg-cyanNeo/15 px-3 py-2 text-left transition';
+        updatePrintZone();
+        updateSummary();
+      });
+    });
+
+    document.querySelectorAll('.size-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.size = btn.dataset.size;
+        document.querySelectorAll('.size-btn').forEach(b => {
+          b.className = 'size-btn rounded-lg border border-white/10 bg-card py-1.5 font-mono text-xs text-slate-300';
+        });
+        btn.className = 'size-btn rounded-lg border border-cyanNeo bg-cyanNeo/15 py-1.5 font-mono text-xs font-bold text-white';
+        updateSummary();
+      });
+    });
+
+    document.getElementById('qty-minus').addEventListener('click', () => {
+      if (state.qty > 1) {
+        state.qty--;
+        document.getElementById('qty-val').textContent = state.qty;
+        updateSummary();
+      }
+    });
+    document.getElementById('qty-plus').addEventListener('click', () => {
+      state.qty++;
+      document.getElementById('qty-val').textContent = state.qty;
+      updateSummary();
+    });
+
+    document.getElementById('second-side-toggle').addEventListener('change', (e) => {
+      state.secondSide = e.target.checked;
+      updateSummary();
+    });
+
+    // Image Upload
+    document.getElementById('image-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        fabric.Image.fromURL(ev.target.result, (img) => {
+          const maxDim = canvas.width * 0.75;
+          const scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+          img.scale(scale);
+          img.set({
+            left: canvas.width / 2,
+            top: canvas.height / 2,
+            originX: 'center',
+            originY: 'center',
+            cornerColor: '#38BDF8',
+            borderColor: '#38BDF8',
+            transparentCorners: false
+          });
+          canvas.add(img);
+          canvas.setActiveObject(img);
+          canvas.renderAll();
+          showToast('Макет загружен в область печати');
+        });
+      };
+      reader.readAsDataURL(file);
+      e.target.value = '';
+    });
+
+    // Add Text
+    document.getElementById('add-text-btn').addEventListener('click', () => {
+      const raw = document.getElementById('text-input').value.trim() || 'FUBOKI';
+      const color = document.getElementById('text-color').value;
+      const txt = new fabric.IText(raw, {
+        left: canvas.width / 2,
+        top: canvas.height / 2,
+        originX: 'center',
+        originY: 'center',
+        fontFamily: 'Inter',
+        fontWeight: '800',
+        fontSize: 26,
+        fill: color,
+        cornerColor: '#38BDF8',
+        borderColor: '#38BDF8',
+        transparentCorners: false
+      });
+      canvas.add(txt);
+      canvas.setActiveObject(txt);
+      canvas.renderAll();
+    });
+
+    // Preset Neo-Tokyo stickers
+    const PRESETS = {
+      oni: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect x="14" y="14" width="172" height="172" rx="18" fill="none" stroke="#F43F5E" stroke-width="8"/><text x="100" y="92" text-anchor="middle" fill="#F4F7FB" font-family="sans-serif" font-weight="800" font-size="34">FUBOKI</text><text x="100" y="132" text-anchor="middle" fill="#38BDF8" font-family="monospace" font-weight="700" font-size="18">NEO // TARAZ</text></svg>`,
+      cyber: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="82" fill="none" stroke="#38BDF8" stroke-width="6" stroke-dasharray="16 8"/><text x="100" y="114" text-anchor="middle" fill="#38BDF8" font-family="sans-serif" font-weight="800" font-size="64">吹雪</text></svg>`,
+      taraz: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 120"><rect x="6" y="6" width="208" height="108" fill="#08090D" stroke="#38BDF8" stroke-width="5"/><text x="110" y="56" text-anchor="middle" fill="#F4F7FB" font-family="monospace" font-weight="700" font-size="28">TARAZ // 08</text><text x="110" y="88" text-anchor="middle" fill="#F43F5E" font-family="monospace" font-weight="700" font-size="16">DTF STUDIO</text></svg>`
+    };
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const svgStr = PRESETS[btn.dataset.preset];
+        fabric.loadSVGFromString(svgStr, (objects, options) => {
+          const group = fabric.util.groupSVGElements(objects, options);
+          const scale = Math.min((canvas.width * 0.65) / group.width, (canvas.height * 0.65) / group.height);
+          group.scale(scale);
+          group.set({
+            left: canvas.width / 2,
+            top: canvas.height / 2,
+            originX: 'center',
+            originY: 'center',
+            cornerColor: '#38BDF8',
+            borderColor: '#38BDF8',
+            transparentCorners: false
+          });
+          canvas.add(group);
+          canvas.setActiveObject(group);
+          canvas.renderAll();
+        });
+      });
+    });
+
+    document.getElementById('delete-obj-btn').addEventListener('click', () => {
+      const active = canvas.getActiveObject();
+      if (active) {
+        canvas.remove(active);
+        canvas.discardActiveObject().renderAll();
+      }
+    });
+
+    document.getElementById('clear-canvas-btn').addEventListener('click', () => {
+      canvas.clear();
+      canvas.renderAll();
+      showToast('Макет очищен');
+    });
+
+    // Copy order text
+    document.getElementById('copy-order-btn').addEventListener('click', () => {
+      const totalText = document.getElementById('total-price').textContent.replace(/[^\d]/g, '');
+      const text = buildOrderText(parseInt(totalText, 10) || 0);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showToast('Заявка скопирована'));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('Заявка скопирована');
+      }
+    });
+
+    // Export high-res transparent PNG (300 DPI equivalent scale)
+    document.getElementById('export-png-btn').addEventListener('click', () => {
+      if (canvas.getObjects().length === 0) {
+        showToast('Сначала добавьте принт на макет');
+        return;
+      }
+      canvas.discardActiveObject().renderAll();
+      const multiplier = Math.round(2400 / canvas.width);
+      const dataURL = canvas.toDataURL({
+        format: 'png',
+        multiplier: multiplier
+      });
+      const link = document.createElement('a');
+      link.download = `fuboki-print-${state.format}-${state.side}-300dpi.png`;
+      link.href = dataURL;
+      link.click();
+      showToast('PNG без фона сохранён');
+    });
+
+    // Export SVG for CorelDRAW 17
+    document.getElementById('export-svg-btn').addEventListener('click', () => {
+      if (canvas.getObjects().length === 0) {
+        showToast('Сначала добавьте принт на макет');
+        return;
+      }
+      canvas.discardActiveObject().renderAll();
+      const svgContent = canvas.toSVG();
+      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = `fuboki-corel17-${state.format}-${state.side}.svg`;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+      showToast('SVG сохранён — можно импортировать в CorelDRAW 17');
+    });
+
+    // Init
+    renderGarmentSVG();
+    updatePrintZone();
+    updateSummary();
+  </script>
+</body>
+</html>
