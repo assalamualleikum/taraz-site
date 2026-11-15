@@ -334,16 +334,7 @@
           <span id="zone-cm-label" class="rounded bg-cyanNeo/15 px-2 py-0.5 text-cyanNeo">Зона: 30 × 30 см</span>
         </div>
 
-        <!-- Quick Position Bar directly above stage -->
-        <div id="position-presets-block" class="mb-2 flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-obsidian/80 px-2.5 py-1.5">
-          <span class="hidden font-mono text-[11px] text-slate-400 sm:inline">Рамка:</span>
-          <div class="grid flex-1 grid-cols-4 gap-1.5">
-            <button type="button" data-pos="center" class="pos-btn rounded-lg border border-cyanNeo bg-cyanNeo/15 py-1 text-[11px] font-semibold text-white">Центр</button>
-            <button type="button" data-pos="left-chest" class="pos-btn rounded-lg border border-white/10 bg-card py-1 text-[11px] text-slate-300 hover:border-white/25">Лев. грудь</button>
-            <button type="button" data-pos="right-chest" class="pos-btn rounded-lg border border-white/10 bg-card py-1 text-[11px] text-slate-300 hover:border-white/25">Прав. грудь</button>
-            <button type="button" data-pos="bottom" class="pos-btn rounded-lg border border-white/10 bg-card py-1 text-[11px] text-slate-300 hover:border-white/25">Низ</button>
-          </div>
-        </div>
+
 
         <!-- Fluid Responsive Stage Wrapper -->
         <div id="stage-wrapper" class="canvas-stage-wrapper">
@@ -749,8 +740,7 @@
       const wH = wrapper.clientHeight || 530;
 
       const isMeter = state.format === 'meter';
-      document.getElementById('position-presets-block').style.display = isMeter ? 'none' : 'flex';
-
+      
       const prevW = canvas.getWidth() || 320;
 
       if (isMeter) {
